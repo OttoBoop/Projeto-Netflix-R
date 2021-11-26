@@ -1,0 +1,239 @@
+---
+title: "A História da Netflix Contada pela Bolsa de Valores"
+author: "Otávio BOpp"
+date: "6/12/2021"
+output:
+  word_document: default
+  html_document: default
+---
+```{r}
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introdução
+
+Neste documento manipularemos o dataset do preço das ações da netflix historicas para analisar o historico de crescimento da empresa desde seu IPO em 2002. No final realizares comparações por pares. A library BatchGetSymbols será utilizada para conseguir a maioria das informaçãos aqui demonstradas. Código utilizado modificado de https://cran.r-project.org/web/packages/BatchGetSymbols/vignettes/BatchGetSymbols-vignette.html
+
+```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2002/05/23'
+last.date <- Sys.Date()
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+```
+
+```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+Após o uso desses comandos, teremos uma databesa com o valor histórico das açoes da netflix  desde seu ipo, utilizando dados retirados do yahoo finance. Utilizando o código abaixo, obteremos um gráfico com o valor no final do dia das ações da netflix desde seu IPO em 23 de maio de 2002. Utilizando a função abaixo, é possível obter um gráfico com o valor histórico da companhia
+
+![Valor historico Netflix](~/New R Environment/Projeto R Otávio/Images/Netflix All Time Market Cap.png)
+
+A partir deste gráfico, já conseguimos fazer algumas assunções sobre a empresa. O valor das ações se manteve relativamente estável entre 2002 e 2010. Em 2010 a netflix passou a oferecer seu serviço de streaming no Canadá. QUando a netflix foi fundada, seu modelo de negócios era baseado no aluguel de filmes em mídia física, que o usuário escolhia calcular em um serviço ainda disponível, mas que nunca expandiu para fora dos Estados Unidos. Em 2007, o serviço de streaming de filmes e séries foi iniciado nos Estados Unidos, ao exportar apenas o serviço de streaming, e não o de aluguel de filmes, para o Canadá, a netflix sinalizou uma mudança no seu modelo de negócios, e os primórdios de uma expansão internacional que viria a atingir quase todos os países do mundo.
+
+### Aluguel de Mídia Física Online: 2002-2010
+
+
+```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2002-05-23'
+last.date <- '2010-01-01'
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+ ```
+ ```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+![DVDS](~/New R Environment/Projeto R Otávio/Images/Netflix 2002-2010.png) 
+
+Quando separamos os anos iniciais da netflix dos anos após seu crescimento, a estabilidade que parecia ser clara no gráfico inicial se mostra muito mais volátil, com períodos de cescimento e queda das ações. O preço das ações começou em alta, atingindo um pico em 2004 imediatamente seguido de uma queda vertiginosa em mais de 50%, o valor das ações foi recuperado entre 2006-2008, atingindo uma certa estabilidade, ainda abaixo do valor pico em 2004. Em 2008 as ações tiveram um novo período de crescimento, seguida por uma nova queda no final do ano, quando a bolha do mercado imobiliário americano estourou e iniciou a grande recessão. Já no início de 2009 o valor das ações estavam quase recuperados, atingindo um novo pico de valor. Isso indica que, ao menos para os acionistas da Netflix, a crise financeira de 2008 teve um efeito negativo de curta duração.. Esse período de crescimento entre 2008-2010 foi muito útil para acumular o capital necessário para a ambiciosa expansão que se iniciaria nos próximos anos
+
+## 2010 a 2015, A Expansão Internacional
+
+```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2010-01-01'
+last.date <- '2015-01-01'
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+ ```
+ ```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+![Valor historico Netflix](~/New R Environment/Projeto R Otávio/Images/Netflix 2010-2015.png)
+ Os projetos de expansão inicialmente foream muito bem sucedidos, atingindo um novo pico acima de 40 dólares das ações, um crescimento de aproximadamente 800% em 5 anos. Esse sucesso, porém, não foi continuo. As ações sofreram uma queda superior a 50% em 2011, coincidente com a expansão do serviço de streaming para a América Latina. Essa queda dos valores das ações, porem, está principalmente relacionado com uma mudança do serviço nos Estados Unidos: o serviço de streaming foi separado do serviço de alugueis de filmes, junto com um aumento do preço para os consumidores. Muitos americanos, satisfeitos com o antigo modelo de negócios da Netflix, cancelaram seus serviços. A companhia, porem, não mudou sua tragetório, e continuou sua expansão agressiva. Em 2012 a empresa iniciou sua expansão na Europa, assim como a produção de conteúdo original, que viria a ser um grande marco do seu serviço. O valor das ações iria superar o pico de 2011 já em 2013, com clara tragetória de expansão
+ 
+## 2015 a 2019 - consolidação do serviço e aumento radical do market cap
+ 
+ ```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2015-01-01'
+last.date <- '2019-12-31'
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+ ```
+ ```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+![Valor historico Netflix](~/New R Environment/Projeto R Otávio/Images/Netflix consolidação 2015-2019.png)
+
+Esse período é caracterizado pela consolidação dos serviços de streaming pelo mundo todo, e como um dos maiores players nesse mercado, as ações da netflix tiveram crescimento relativamente constante. No mesmo período, a competição nesse mercado vem sendo cada vez mais acirrada. Talvez por isso vemos uma "estabilização" no preço das ações, com altos e baixos que tipicamente deixavam o valor das ações em um mesmo range. Podemos observar uma queda vertiginosa em 2019, que foi rapidamente recuperada. Essa queda está diretamente relacionada com o lançamento do serviço concorrente Disney+ no final desse ano.
+
+## Expansão pós coronavírus
+
+A pandemia do covid-19 assalou todas as economias do mundo, com dezenas de país entrando em lockdown restrito, e forçando centenas de milhões de pessoas a estudar e trabalhar em casa. Os impactos economicos foram largamente devastadores para a economia, mas o mercado de ações mundial foi largamente salvo por estímulos governamentais, rapidamente voltando ao seu nível pré-pandemia e atingindo novos récordes. Com a queda das taxas de juros na maioria das economia, investir no mercado financeiro se tornou muito mais atrativo, ao mesmo tempo em que a recessão estimula a população a poupar mais dinheiro. 
+
+E claro, o serviço oferecido pela netflix é extremamente atraente para uma população que precisa ficar em casa a maior parte do dia, e não pode mais se encontrar com amigos para se divertir. Uma das melhores opções de entreterimente nesta situação é assistir filmes e séries em serviços como o netflix.
+
+Em geral, as externalidades causadas pela pandemia de covid-19, tão devastadora para a maioria dos setores da economia, fez apenas pressões positivas para empresas como o netflix (exceto pela diminuição de renda de seus consumidores, que pode forçar pessoas a cancelarem seu serviço, e diminui a probabilidade de novos assinantes criarem sua conta). Esse aglomeração de fatores favoráveis foi claramente traduzida no valor das ações desde o inicio  de 2020. Esse crescimente começa a se estabilizar no final de 2020, mas ainda com grande volatilidade, num range de preços similar. 
+
+ ```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2018-01-01'
+last.date <- Sys.Date()
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+ ```
+ ```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+![Valor historico Netflix](~/New R Environment/Projeto R Otávio/Images/Netflix 2018- hoje.png)
+
+É incerto como o fim da pandemia vai impactar as ações da empresa no futuro. Os cenários mais prováveis são uma queda do valor das ações para níveis ligeiramente  acima dos de 2019, ou uma estabilidade nos novos preços por ação. Uma nova subida é pouco provável após o fim das condições favoráveis de um mundo pós pandemia.
+
+### Comparações com outras empresas
+
+As principais concorrentes da Netflix são o Amazon Prime e Disney+/Hulu, respectivamente da Amazon e Disney. Essas empresas, porém, são muito mais diversificadas do que a netflix. Analisaremos o valor das ações dessas empresas entre 2017 e os dias atuais, mas como esse valores se referem a todo o conglomerado Disney e Amazon, essas ações não refletem a saúde de seus serviços de streaming como com o Netflix. Muitos serviços de streaming menores não possuem ações disponíveis para o público, dificultando essa análise por pares
+
+ ```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2018-01-01'
+last.date <- Sys.Date()
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX', 'AMZN', 'DIS')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+ ```
+ ```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+![Valor historico Netflix](~/New R Environment/Projeto R Otávio/Netflix, Disney, Amazon.png)
+Como podemos ver, as três empresas registraram altas extremamente similares após o início de 2020 e da pandemia de COvid, com a Disney regristando uma queda no ínicio de 2020, provavelmente decorrente de pressões negativas em outras áreas da empresa, especialmente a impossibilidade de lançar novos filmes no cinema. Muitos dos filmes que a Disney esperava obter um grande público no cinema acabaram sendo movidos para o Disney+, após controversar e problemas estratégicos. Esse modelo foi consolidado no final de 2020, e provavelmente explica por que o valor das ações inicialmente divergiu daquele apresentado em suas concorrentes. Apenas após a consolidação do novo modelo de lançar filmes por parte da Disney, suas ações obtiveram o mesmo crescimento de suas concorrentes.
+
+### Comparação com empresas de cinema
+
+As três maiores redes de cinema no mercado de ação americano são AMC, Cinemark e Regal Entertainment Group. Note que a primeira ação vem sido uma favorita de especuladores desde o início da pandemia, o que afeta o seu valor. Vamos comparar a tragetoria de suas ações de 2018 até hoje com a da Netflix.
+
+ ```library(BatchGetSymbols)
+
+# set dates
+first.date <- '2018-01-01'
+last.date <- Sys.Date()
+freq.data <- 'daily'
+# set tickers
+tickers <- c('NFLX', 'CNK', 'AMC', 'RBC')
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+ ```
+ ```
+library(ggplot2)
+ 
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+print(p)
+```
+![Valor historico Netflix](~/New R Environment/Projeto R Otávio/Images/Netflix vs theather.png)
+
+Nesses gráficos podemos ver que as empresas de cinema possuiam estoque extremamente estáveis pré pandemia, e passaram por uma queda considerável em 2020. O final da pandemia vem sido extremamente animador para essas empresas, que estão conseguindo subir para níveis até mesmo superiores aos anteriores à pandemia. Muito desses resultados, porém, pode ser explicado pela ação de especuladores, e no longo prazo é provável que esses preços cairão novamente, provavelmente para valores próximos aos anteriores à pandemia.
